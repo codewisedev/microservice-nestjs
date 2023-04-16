@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  mysqldb:
+    image: mysql:8.0
+    container_name: mysqlcontainer
+    env_file: .env
+    command: --default-authentication-plugin=mysql_native_password
+    restart: unless-stopped
+    volumes:
+      - ./dbinit/init.sql:/docker-entrypoint-initdb.d/0_init.sql
+      - $HOME/database:/var/lib/mysql
+    ports:
+      - ${MYSQL_PORT}:${MYSQL_PORT}
+    expose:
+      - ${MYSQL_PORT}
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      SERVICE_TAGS: prod
+      SERVICE_NAME: mysqldb
+    networks:
+      - smr
+
+  nodeapp:
+    container_name: nodeappcontainer
+    env_file: .env
+    build:
+      context: .
+      dockerfile: dockerfile
+    image: nodeapp:v1
+    volumes:
+      - $HOME/nodeapp:/code
+    ports:
+      - ${SERVER_CONSTANTS_PORT}:${SERVER_CONSTANTS_PORT}
+    expose:
+      - ${SERVER_CONSTANTS_PORT}
+    environment:
+      DB_HOST: ${MYSQL_HOST}
+      DB_PORT: ${MYSQL_PORT}
+      DB_USER: ${MYSQL_USER}
+      DB_PASSWORD: ${MYSQL_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      DB_CONNECTION_LIMIT: 20
+      SERVICE_TAGS: prod
+      SERVICE_NAME: nodeappservice
+      SERVER_PORT: ${SERVER_CONSTANTS_PORT}
+    restart: on-failure
+    depends_on:
+      - mysqldb
+    networks:
+      - smr
+
+networks:
+  smr:
+    driver: bridge

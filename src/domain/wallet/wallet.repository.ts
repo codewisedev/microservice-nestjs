@@ -9,4 +9,8 @@ export class WalletRepository {
     @InjectRepository(Wallet)
     private walletRepository: Repository<Wallet>,
   ) {}
+
+  async findWalletByUserId(id: number): Promise<Wallet> {
+    return await this.walletRepository.findOne({ where: { id } });
+  }
 }

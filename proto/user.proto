@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package user;
+
+service UserService {
+  rpc FindOne (UserById) returns (User) {}
+  rpc AddMoney (AddMoneyRequest) returns (Reference) {}
+}
+
+message UserById {
+  int32 id = 1;
+}
+
+message AddMoneyRequest {
+  int32 id = 1;
+  float amount = 2;
+}
+
+message User {
+  int32 id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  int32 balance = 4;
+}
+
+message Reference {
+  string reference_id = 1;
+}

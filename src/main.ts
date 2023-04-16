@@ -2,28 +2,23 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Config } from '@common/config';
 import { ValidationPipe } from '@nestjs/common';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { json, urlencoded } from 'express';
+import { Transport, MicroserviceOptions } from '@nestjs/microservices';
+import { join } from 'path';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+    AppModule,
+    {
+      transport: Transport.GRPC,
+      options: {
+        package: 'user',
+        protoPath: join(Config.app.PWD, 'proto/user.proto'),
+      },
+    },
+  );
 
   app.useGlobalPipes(new ValidationPipe());
 
-  app.use(json({ limit: '2mb' }));
-  app.use(urlencoded({ extended: true, limit: '2mb' }));
-
-  const config = new DocumentBuilder()
-    .addBearerAuth()
-    .setTitle('Microservice Example')
-    .setDescription('Microservice Example Api')
-    .setVersion('1.0')
-    .addTag('API')
-    .build();
-
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
-
-  await app.listen(Config.app.port);
+  await app.listen();
 }
 bootstrap();

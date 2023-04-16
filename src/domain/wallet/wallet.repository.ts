@@ -10,7 +10,20 @@ export class WalletRepository {
     private walletRepository: Repository<Wallet>,
   ) {}
 
-  async findWalletByUserId(id: number): Promise<Wallet> {
+  async findOne(id: number): Promise<Wallet> {
     return await this.walletRepository.findOne({ where: { id } });
+  }
+
+  async findWalletByUserId(id: number): Promise<Wallet> {
+    return await this.walletRepository.findOne({ where: { user_id: id } });
+  }
+
+  async updateWalletBalance(id: number, amount: number) {
+    return await this.walletRepository
+      .createQueryBuilder('Wallets')
+      .where('id = :id', { id })
+      .update<Wallet>(Wallet, { balance: amount })
+      .updateEntity(true)
+      .execute();
   }
 }

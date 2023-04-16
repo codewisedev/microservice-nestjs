@@ -12,5 +12,5 @@ export class User {
   lastName: string;
 
   @Column()
-  created_at: Date;
+  created_at: string;
 }

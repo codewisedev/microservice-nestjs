@@ -13,5 +13,8 @@ export class Transaction {
   reference_id: string;
 
   @Column()
-  created_at: Date;
+  amount: number;
+
+  @Column()
+  created_at: string;
 }

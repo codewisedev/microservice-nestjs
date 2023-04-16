@@ -33,6 +33,7 @@ CREATE TABLE Transactions (
   wallet_id    BIGINT REFERENCES Wallets(id),
   reference_id VARCHAR(255) DEFAULT NULL,
   created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  amount       BIGINT UNSIGNED NOT NULL,
   PRIMARY KEY (id),
   CONSTRAINT UQ_Patients_Reference UNIQUE (reference_id)
 );

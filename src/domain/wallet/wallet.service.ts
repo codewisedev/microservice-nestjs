@@ -6,7 +6,15 @@ import { Wallet } from '@domain/wallet/entity';
 export class WalletService {
   constructor(private walletRepository: WalletRepository) {}
 
-  async findWalletByUserId(id: number): Promise<Wallet> {
-    return await this.walletRepository.findWalletByUserId(id);
+  findOne(id: number): Promise<Wallet> {
+    return this.walletRepository.findOne(id);
+  }
+
+  findWalletByUserId(id: number): Promise<Wallet> {
+    return this.walletRepository.findWalletByUserId(id);
+  }
+
+  updateWalletBalance(id: number, amount: number) {
+    this.walletRepository.updateWalletBalance(id, amount);
   }
 }

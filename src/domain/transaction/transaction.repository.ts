@@ -9,4 +9,12 @@ export class TransactionRepository {
     @InjectRepository(Transaction)
     private transactionRepository: Repository<Transaction>,
   ) {}
+
+  async findAll() {
+    return await this.transactionRepository.find();
+  }
+
+  async createTransaction(data) {
+    return await this.transactionRepository.save(data);
+  }
 }

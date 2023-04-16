@@ -1,13 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
-import { User } from '@domain/user/entity';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'Wallets' })
 export class Wallet {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToOne((type) => User, (user) => user.id)
-  user_id: User;
+  @Column()
+  user_id: number;
 
   @Column()
   wallet_name: string;
@@ -16,5 +15,5 @@ export class Wallet {
   balance: number;
 
   @Column()
-  created_at: Date;
+  created_at: string;
 }

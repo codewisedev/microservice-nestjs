@@ -11,7 +11,7 @@ async function bootstrap() {
     {
       transport: Transport.GRPC,
       options: {
-        url: '0.0.0.0:50051',
+        url: Config.app.host + ':' + Config.app.port,
         package: 'user',
         protoPath: join(Config.app.PWD, 'proto/user.proto'),
       },

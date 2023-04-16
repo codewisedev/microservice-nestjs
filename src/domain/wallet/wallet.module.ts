@@ -10,4 +10,4 @@ import { WalletRepository } from '@domain/wallet/wallet.repository';
   controllers: [],
   exports: [WalletService],
 })
-export class UsersModule {}
+export class WalletModule {}

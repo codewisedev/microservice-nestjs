@@ -24,3 +24,9 @@ npm run start:dev
 ```bash
 sudo docker-compose -f docker-compose.yml up --build
 ```
+
+## Run Test
+
+```bash
+npm run test:e2e domain/user.e2e-spec.ts
+```

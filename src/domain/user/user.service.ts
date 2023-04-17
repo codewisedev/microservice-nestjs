@@ -1,13 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { UserRepository } from '@domain/user/user.repository';
-import {
-  UserByIdInterface,
-  AddMoneyRequestInterface,
-  ReferenceInterface,
-  UserInterface,
-} from '@domain/user/interface';
 import { WalletService } from '@domain/wallet/wallet.service';
 import { TransactionService } from '@domain/transaction/transaction.service';
+import { AddMoneyResponse, FindUserResponse } from './response';
 
 @Injectable()
 export class UserService {
@@ -17,34 +12,27 @@ export class UserService {
     private transactionService: TransactionService,
   ) {}
 
-  async findOne(data: UserByIdInterface): Promise<UserInterface> {
-    const user = await this.userRepository.findOne(data.id);
-    const wallet = await this.walletService.findWalletByUserId(data.id);
-    return {
-      id: user.id,
-      first_name: user.firstName,
-      last_name: user.lastName,
-      balance: wallet.balance,
-    };
+  async findOne(user_id: number): Promise<FindUserResponse> {
+    const wallet = await this.walletService.findWalletByUserId(user_id);
+    return { balance: wallet.balance };
   }
 
-  async addMoney(data: AddMoneyRequestInterface): Promise<ReferenceInterface> {
-    const wallet = await this.walletService.findWalletByUserId(data.id);
-    const newAmount = wallet.balance + data.amount;
-    this.walletService.updateWalletBalance(wallet.id, newAmount);
+  async addMoney(user_id: number, amount: number): Promise<AddMoneyResponse> {
+    const wallet = await this.walletService.findWalletByUserId(0);
 
-    const referenceId = (
-      Math.floor(Math.random() * (Math.floor(999999) - Math.ceil(0) + 1)) + 0
-    )
-      .toString()
-      .padStart(6, '0');
+    if (wallet) {
+      const newAmount = wallet.balance + amount;
+      this.walletService.updateWalletBalance(wallet.id, newAmount);
 
-    this.transactionService.createTransaction({
-      wallet_id: wallet.id,
-      reference_id: referenceId,
-      amount: data.amount,
-    });
+      const referenceId = (
+        Math.floor(Math.random() * (Math.floor(999999) - Math.ceil(0) + 1)) + 0
+      )
+        .toString()
+        .padStart(6, '0');
 
-    return { reference_id: referenceId };
+      return { reference_id: referenceId };
+    } else {
+      throw new BadRequestException('User not found!!');
+    }
   }
 }

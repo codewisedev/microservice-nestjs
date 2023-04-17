@@ -11,6 +11,6 @@ export class User {
   @Column()
   lastName: string;
 
-  @Column()
+  @Column('varchar', { default: String(new Date()) })
   created_at: string;
 }

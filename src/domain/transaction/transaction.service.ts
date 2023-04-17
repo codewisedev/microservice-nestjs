@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { TransactionRepository } from '@domain/transaction/transaction.repository';
 import { Cron } from '@nestjs/schedule';
+import { CreateTransactionRequest } from './request';
 
 @Injectable()
 export class TransactionService {
   constructor(private transactionRepository: TransactionRepository) {}
 
-  createTransaction(data) {
-    this.createTransaction(data);
+  createTransaction(data: CreateTransactionRequest) {
+    this.transactionRepository.createTransaction(data);
   }
 
   @Cron('0 59 23 * * *', { name: 'sum transactions amount' })

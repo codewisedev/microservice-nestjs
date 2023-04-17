@@ -14,6 +14,6 @@ export class Wallet {
   @Column()
   balance: number;
 
-  @Column()
+  @Column('varchar', { default: String(new Date()) })
   created_at: string;
 }

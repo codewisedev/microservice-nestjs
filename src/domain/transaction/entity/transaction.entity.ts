@@ -1,13 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
-import { Wallet } from '@domain/wallet/entity';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'Transactions' })
 export class Transaction {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne((type) => Wallet, (wallet) => wallet.id)
-  wallet_id: Wallet;
+  @Column()
+  wallet_id: number;
 
   @Column()
   reference_id: string;
@@ -15,6 +14,6 @@ export class Transaction {
   @Column()
   amount: number;
 
-  @Column()
+  @Column('varchar', { default: String(new Date()) })
   created_at: string;
 }

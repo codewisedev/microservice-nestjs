@@ -19,7 +19,7 @@ DROP TABLE IF EXISTS Wallets;
 
 CREATE TABLE Wallets (
   id          BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  user_id     BIGINT REFERENCES Users(id),
+  user_id     BIGINT UNSIGNED NOT NULL,
   wallet_name VARCHAR(255) DEFAULT NULL,
   balance     BIGINT UNSIGNED DEFAULT 0,
   created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -30,28 +30,19 @@ DROP TABLE IF EXISTS Transactions;
 
 CREATE TABLE Transactions (
   id           BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  wallet_id    BIGINT REFERENCES Wallets(id),
-  reference_id VARCHAR(255) DEFAULT NULL,
+  wallet_id    BIGINT UNSIGNED NOT NULL,
+  reference_id VARCHAR(255) NOT NULL,
+  amount       BIGINT SIGNED NOT NULL,
   created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  amount       BIGINT UNSIGNED NOT NULL,
+  
   PRIMARY KEY (id),
   CONSTRAINT UQ_Patients_Reference UNIQUE (reference_id)
 );
 
-DELIMITER //
-CREATE PROCEDURE create_and_return(IN first_name VARCHAR(255), IN last_name VARCHAR(255))
+INSERT INTO Users(first_name, last_name) VALUES ('mohammad', 'reyhani');
+SET @USER_ID = LAST_INSERT_ID();
+SELECT * FROM Users WHERE id=@USER_ID;
 
-BEGIN
-  INSERT INTO Users(first_name, last_name) VALUES ('mohammad', 'reyhani');
-  
-  SET @USER_ID = LAST_INSERT_ID();
-
-  SELECT * FROM Users WHERE id=@USER_ID;
-
-  INSERT INTO Wallets(wallet_name, user_id) VALUES ('myWallet', @USER_ID);
-  
-  SET @WALLET_ID = LAST_INSERT_ID();
-
-  SELECT * FROM Wallets WHERE id=@WALLET_ID;
-END //
-DELIMITER ;
+INSERT INTO Wallets(wallet_name, user_id) VALUES ('myWallet', @USER_ID);
+SET @WALLET_ID = LAST_INSERT_ID();
+SELECT * FROM Wallets WHERE id=@WALLET_ID;

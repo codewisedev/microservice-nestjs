@@ -1,7 +1,5 @@
 import { Type, applyDecorators } from '@nestjs/common';
 import {
-  ApiBearerAuth,
-  ApiHeader,
   ApiOkResponse,
   ApiOperation,
   ApiParam,
@@ -44,15 +42,6 @@ export function DocumentGenerator(
     ApiOperation({
       summary: documentGeneratorInfo.summary,
       description: documentGeneratorInfo.description,
-    }),
-    // ApiHeader({
-    //   name: 'authorization',
-    //   description: 'Authorization header',
-    // }),
-    ApiBearerAuth(),
-    ApiHeader({
-      name: 'x-tenant',
-      description: 'Tenant header',
     }),
   ];
   if (documentGeneratorInfo[200]) {

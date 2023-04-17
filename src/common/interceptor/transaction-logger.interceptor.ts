@@ -24,13 +24,20 @@ export class TransactionLoggerInterceptor implements NestInterceptor {
     const request = ctx.getRequest<Request>();
     const response = ctx.getResponse<Response>();
 
+    /* This code is defining an interceptor in NestJS that logs transactions. The `intercept` method is
+    called for every incoming request, and it receives the current execution context and a
+    `CallHandler` object that represents the next middleware or controller method in the chain. */
     return next.handle().pipe(
       tap(async (data) => {
         if (response.statusCode === HttpStatus.CREATED) {
-          const wallet = await this.walletService.findWalletByUserId(0);
-          console.log(request.body.amount);
+          const wallet = await this.walletService.findWalletByUserId(
+            request.body.user_id,
+          );
 
           if (wallet) {
+            /* `this.transactionService.createTransaction()` is a method call that creates a new
+            transaction record in the database. It takes an object with three properties as its
+            argument: `reference_id`, `wallet_id`, and `amount`. */
             this.transactionService.createTransaction({
               reference_id: data.reference_id,
               wallet_id: wallet.id,

@@ -1,4 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+} from 'typeorm';
 
 @Entity({ name: 'Wallets' })
 export class Wallet {
@@ -14,6 +19,6 @@ export class Wallet {
   @Column()
   balance: number;
 
-  @Column('varchar', { default: String(new Date()) })
+  @CreateDateColumn()
   created_at: string;
 }

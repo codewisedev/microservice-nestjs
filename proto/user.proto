@@ -17,10 +17,7 @@ message AddMoneyRequest {
 }
 
 message User {
-  int32 id = 1;
-  string first_name = 2;
-  string last_name = 3;
-  int32 balance = 4;
+  int32 balance = 1;
 }
 
 message Reference {

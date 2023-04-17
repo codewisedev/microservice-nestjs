@@ -9,7 +9,7 @@ import {
   HttpStatus,
   Body,
 } from '@nestjs/common';
-import { GrpcMethod } from '@nestjs/microservices';
+import { GrpcMethod, MessagePattern } from '@nestjs/microservices';
 import { UserService } from '@domain/user/user.service';
 import {
   UserByIdInterface,
@@ -60,6 +60,7 @@ export class UserController {
   `UserByIdInterface` object as a parameter and returns a `Promise` that resolves to a
   `UserInterface` object. It calls the `findOne` method of the `userService` instance with the
   `UserByIdInterface` object as an argument to retrieve a user with the specified ID. */
+  @MessagePattern({ balance: 0 })
   @GrpcMethod('UserService', 'FindOne')
   findUserBalanceGrpc(data: UserByIdInterface): Promise<UserInterface> {
     return this.userService.findOne(data.id);
@@ -95,6 +96,7 @@ export class UserController {
   /* `@GrpcMethod('UserService', 'AddMoney')` is a decorator from the `@nestjs/microservices` package
   that marks the `addMoney` method as a gRPC method. It specifies the service name (`UserService`)
   and the method name (`AddMoney`) that this method corresponds to. */
+  @MessagePattern({ reference_id: '123456' })
   @GrpcMethod('UserService', 'AddMoney')
   addMoney(data: AddMoneyRequestInterface): Promise<ReferenceInterface> {
     return this.userService.addMoney(data.id, data.amount);

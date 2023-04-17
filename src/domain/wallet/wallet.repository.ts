@@ -10,6 +10,17 @@ export class WalletRepository {
     private walletRepository: Repository<Wallet>,
   ) {}
 
+  /**
+   * This function finds and returns a wallet object with a specific ID.
+   * @param {number} id - The `id` parameter is a number that represents the unique identifier of a
+   * `Wallet` entity. The `findOne` method is used to retrieve a single `Wallet` entity from the
+   * database based on its `id`. The method returns a Promise that resolves to the retrieved `Wallet`
+   * entity.
+   * @returns The `findOne` method is returning a `Promise` that resolves to a `Wallet` object. The
+   * `Wallet` object is retrieved from the `walletRepository` using the `findOne` method with the `id`
+   * parameter as the search criteria. The `await` keyword is used to wait for the `Promise` to resolve
+   * before returning the `Wallet` object.
+   */
   async findOne(id: number): Promise<Wallet> {
     return await this.walletRepository.findOne({ where: { id } });
   }

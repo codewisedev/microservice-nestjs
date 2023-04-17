@@ -11,10 +11,21 @@ export class TransactionRepository {
     private transactionRepository: Repository<Transaction>,
   ) {}
 
+  /**
+   * This function returns all transactions from the transaction repository.
+   * @returns The `findAll()` method is returning a promise that resolves to an array of all the
+   * records in the `transactionRepository`. The `await` keyword is used to wait for the promise to
+   * resolve before returning the result.
+   */
   async findAll() {
     return await this.transactionRepository.find();
   }
 
+  /**
+   * This function creates a new transaction record in the database using the provided data.
+   * @param {CreateTransactionRequest} data - CreateTransactionRequest object which contains the
+   * following properties:
+   */
   async createTransaction(data: CreateTransactionRequest) {
     this.transactionRepository
       .createQueryBuilder()

@@ -5,7 +5,6 @@ import {
   Get,
   Post,
   HttpCode,
-  Param,
   HttpStatus,
   Body,
 } from '@nestjs/common';
@@ -23,6 +22,7 @@ import { TransformPlainToInstance } from 'class-transformer';
 import { AddMoneyResponse, FindUserResponse } from '@domain/user/response';
 import { AddMoneyRequest } from './request';
 import { TransactionLoggerInterceptor } from '@common/interceptor/transaction-logger.interceptor';
+import { FindUserRequest } from './request/find-user.request';
 
 @UseInterceptors(FormatResponseInterceptor)
 @UseInterceptors(ClassSerializerInterceptor)
@@ -49,9 +49,9 @@ export class UserController {
   @HttpCode(HttpStatus.OK)
   @TransformPlainToInstance(FindUserResponse)
   async findUserBalance(
-    @Param('user_id') user_id: number,
+    @Body() findUserRequest: FindUserRequest,
   ): Promise<FindUserResponse> {
-    return this.userService.findOne(user_id);
+    return this.userService.findOne(findUserRequest.user_id);
   }
 
   /* `@GrpcMethod('UserService', 'FindOne')` is a decorator from the `@nestjs/microservices` package

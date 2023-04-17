@@ -22,7 +22,11 @@ export class UserService {
    */
   async findOne(user_id: number): Promise<FindUserResponse> {
     const wallet = await this.walletService.findWalletByUserId(user_id);
-    return { balance: wallet.balance };
+    if (wallet) {
+      return { balance: wallet.balance };
+    } else {
+      throw new BadRequestException('User not found!!');
+    }
   }
 
   /**

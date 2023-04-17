@@ -2,9 +2,7 @@
 
 Example for grpc in nestjs
 
-## Installation
-
-### Using Node On Bare Metal
+## Installation & Run
 
 install dependencies
 

@@ -41,16 +41,24 @@ export class UserService {
 
     if (wallet) {
       const newAmount = wallet.balance + amount;
-      this.walletService.updateWalletBalance(wallet.id, newAmount);
 
-      /* This code generates a random 6-digit reference ID as a string. */
-      const referenceId = (
-        Math.floor(Math.random() * (Math.floor(999999) - Math.ceil(0) + 1)) + 0
-      )
-        .toString()
-        .padStart(6, '0');
+      if (newAmount > 0) {
+        this.walletService.updateWalletBalance(wallet.id, newAmount);
 
-      return { reference_id: referenceId };
+        /* This code generates a random 6-digit reference ID as a string. */
+        const referenceId = (
+          Math.floor(Math.random() * (Math.floor(999999) - Math.ceil(0) + 1)) +
+          0
+        )
+          .toString()
+          .padStart(6, '0');
+
+        return { reference_id: referenceId };
+      } else {
+        throw new BadRequestException(
+          'The transaction amount is greater than of wallet balance!!',
+        );
+      }
     } else {
       throw new BadRequestException('User not found!!');
     }

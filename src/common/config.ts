@@ -7,7 +7,7 @@ dotenv.config({
 
 export const Config = {
   app: {
-    host: process.env.SERVER_CONSTANTS_HOST,
+    grpcHost: process.env.GRPC_SERVER_CONSTANTS_HOST,
     port: +process.env.SERVER_CONSTANTS_PORT,
     PWD: process.env.PWD,
   },
